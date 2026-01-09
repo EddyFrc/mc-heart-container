@@ -58,6 +58,8 @@ public class EddysHeartContainer implements ModInitializer {
                 addHeartPieceItemToLoot(tableBuilder, 0.1f);
             }
         });
+
+        LOGGER.info("Hello, this is Eddy's Heart Container mod, everything seems to work fine :)");
     }
 
     private static void addHeartPieceItemToLoot(LootTable.Builder tableBuilder, float chance) {
