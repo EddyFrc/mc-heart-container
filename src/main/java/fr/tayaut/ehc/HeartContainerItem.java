@@ -20,7 +20,7 @@ public class HeartContainerItem extends Item {
      * @param world the world the item was used in
      * @param user the player who used the item
      * @param hand the hand used
-     * @return
+     * @return ActionResult
      */
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
