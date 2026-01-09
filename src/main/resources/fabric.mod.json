@@ -1,29 +1,29 @@
 {
   "schemaVersion": 1,
-  "id": "heart-container",
+  "id": "ehc",
   "version": "${version}",
-  "name": "heart-container",
+  "name": "Eddy's Heart Containers",
   "description": "",
   "authors": [],
   "contact": {},
   "license": "All-Rights-Reserved",
-  "icon": "assets/heart-container/icon.png",
+  "icon": "assets/ehc/icon.png",
   "environment": "*",
   "entrypoints": {
     "fabric-datagen": [
-      "fr.tayaut.heartContainer.client.HeartContainerDataGenerator"
+      "fr.tayaut.ehc.client.HeartContainerDataGenerator"
     ],
     "client": [
-      "fr.tayaut.heartContainer.client.HeartContainerClient"
+      "fr.tayaut.ehc.client.HeartContainerClient"
     ],
     "main": [
-      "fr.tayaut.heartContainer.HeartContainer"
+      "fr.tayaut.ehc.EddysHeartContainer"
     ]
   },
   "mixins": [
-    "heart-container.mixins.json",
+    "ehc.mixins.json",
     {
-      "config": "heart-container.client.mixins.json",
+      "config": "ehc.client.mixins.json",
       "environment": "client"
     }
   ],

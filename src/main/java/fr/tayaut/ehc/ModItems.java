@@ -1,4 +1,4 @@
-package fr.tayaut.heartContainer;
+package fr.tayaut.ehc;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
@@ -38,7 +38,7 @@ public class ModItems {
      */
     public static Item register(String name, Function<Item.Settings, Item> itemFactory, Item.Settings settings) {
         // Créer une clé pour le registre, composée du nom de l'item donné en argument et autres infos diverses
-        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(HeartContainer.MOD_ID, name));
+        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(EddysHeartContainer.MOD_ID, name));
         // AJOUT : Lier la clé aux settings (Souvent requis en 1.21.2+)
         settings.registryKey(itemKey);
         // Fonction utilisée

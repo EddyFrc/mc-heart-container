@@ -14,7 +14,7 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        "heart-container" {
+        "ehc" {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }

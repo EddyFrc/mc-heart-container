@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "heart-container:item/heart_container"
+    "layer0": "ehc:item/heart_container"
   }
 }

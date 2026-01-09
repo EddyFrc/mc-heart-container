@@ -1,4 +1,4 @@
-package fr.tayaut.heartContainer;
+package fr.tayaut.ehc;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class HeartContainer implements ModInitializer {
+public class EddysHeartContainer implements ModInitializer {
 
-    public static final String MOD_ID = "heart-container";
+    public static final String MOD_ID = "ehc";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     private static final ArrayList<Identifier> LOOT_TABLE_IDS_50_PERCENT = new ArrayList<>(Collections.singleton(

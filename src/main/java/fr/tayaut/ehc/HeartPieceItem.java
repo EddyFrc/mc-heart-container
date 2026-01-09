@@ -1,4 +1,4 @@
-package fr.tayaut.heartContainer;
+package fr.tayaut.ehc;
 
 import net.minecraft.item.Item;
 

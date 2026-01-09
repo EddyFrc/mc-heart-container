@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "heart-container:item/heart_piece"
+    "model": "ehc:item/heart_container"
   }
 }

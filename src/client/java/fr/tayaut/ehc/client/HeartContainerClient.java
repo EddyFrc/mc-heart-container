@@ -1,4 +1,4 @@
-package fr.tayaut.heartContainer.client;
+package fr.tayaut.ehc.client;
 
 import net.fabricmc.api.ClientModInitializer;
 

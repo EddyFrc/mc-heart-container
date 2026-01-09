@@ -5,10 +5,10 @@
     "PP"
   ],
   "key": {
-    "P": "heart-container:heart_piece"
+    "P": "ehc:heart_piece"
   },
   "result": {
-    "id": "heart-container:heart_container",
+    "id": "ehc:heart_container",
     "count": 1
   }
 }

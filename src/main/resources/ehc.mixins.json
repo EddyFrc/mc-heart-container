@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "fr.tayaut.heartContainer.mixin",
+  "package": "fr.tayaut.ehc.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],

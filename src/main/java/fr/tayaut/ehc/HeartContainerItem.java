@@ -1,4 +1,4 @@
-package fr.tayaut.heartContainer;
+package fr.tayaut.ehc;
 
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
