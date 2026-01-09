@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PP",
+    "PP"
+  ],
+  "key": {
+    "P": "heart-container:heart_piece"
+  },
+  "result": {
+    "id": "heart-container:heart_container",
+    "count": 1
+  }
+}
