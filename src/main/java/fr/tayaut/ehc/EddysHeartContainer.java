@@ -1,7 +1,9 @@
 package fr.tayaut.ehc;
 
+import fr.tayaut.ehc.event.PlayerAdvancementCallback;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
@@ -56,6 +58,26 @@ public class EddysHeartContainer implements ModInitializer {
                 addHeartPieceItemToLoot(tableBuilder, 0.2f);
             } else if (LOOT_TABLE_IDS_10_PERCENT.contains(registryKey.getValue())) {
                 addHeartPieceItemToLoot(tableBuilder, 0.1f);
+            }
+        });
+
+        // ENREGISTREMENT DU CALLBACK
+        // C'est ici qu'on "s'abonne" à l'événement "le joueur vient de "débloquer" un progrès".
+        PlayerAdvancementCallback.EVENT.register((player, advancement) -> {
+
+            // Récupérer l'ID de l'achievement (ex: "minecraft:story/mine_stone")
+            String advancementId = advancement.id().toString();
+            if (advancementId.equals("minecraft:end/kill_dragon")
+                || advancementId.equals("minecraft:nether/create_beacon")
+                || advancementId.equals("minecraft:adventure/hero_of_the_village")
+                || advancementId.equals("minecraft:nether/all_potions")
+                || advancementId.equals("minecraft:adventure/adventuring_time")
+                || advancementId.equals("minecraft:adventure/kill_all_mobs")) {
+                ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
+                if (!player.getInventory().insertStack(heartContainer)) {
+                    player.dropItem(heartContainer, false);
+                    // TODO: ça ça marche pô
+                }
             }
         });
 
