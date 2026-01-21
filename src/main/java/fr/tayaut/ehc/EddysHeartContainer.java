@@ -1,8 +1,14 @@
 package fr.tayaut.ehc;
 
+import fr.tayaut.ehc.data.IEntityDataSaver;
 import fr.tayaut.ehc.event.PlayerAdvancementCallback;
+import fr.tayaut.ehc.event.PlayerKillEntityCallback;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.mob.ElderGuardianEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
@@ -61,8 +67,7 @@ public class EddysHeartContainer implements ModInitializer {
             }
         });
 
-        // ENREGISTREMENT DU CALLBACK
-        // C'est ici qu'on "s'abonne" à l'événement "le joueur vient de "débloquer" un progrès".
+        // enregistrement du callback "progrès"
         PlayerAdvancementCallback.EVENT.register((player, advancement) -> {
 
             // Récupérer l'ID de l'achievement (ex: "minecraft:story/mine_stone")
@@ -74,10 +79,24 @@ public class EddysHeartContainer implements ModInitializer {
                 ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
                 if (!player.getInventory().insertStack(heartContainer)) {
                     player.dropItem(heartContainer, false);
-                    // TODO: ça ça marche pô
+                    player.getEntityWorld().spawnEntity(new ItemEntity(player.getEntityWorld(), player.getX(), player.getY(), player.getZ(), heartContainer));
                 }
             }
         });
+
+        // enregistrement du callback "entité morte"
+        PlayerKillEntityCallback.EVENT.register(((entity, player) -> {
+            IEntityDataSaver saver = (IEntityDataSaver) player;
+            // si l'entité qui est morte est un dragon et qu'il n'a pas encore été tué par ce joueur
+            if (entity instanceof EnderDragonEntity && !saver.ehc$onDragonKilled()
+                // ou alors un wither, etc.
+                || entity instanceof WitherEntity && !saver.ehc$onWitherKilled()
+                || entity instanceof ElderGuardianEntity && !saver.ehc$onElderGuardianKilled()) {
+                // faire spawn un réceptacle de coeur sur le mob
+                ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
+                player.getEntityWorld().spawnEntity(new ItemEntity(player.getEntityWorld(), entity.getX(), entity.getY(), entity.getZ(), heartContainer));
+            }
+        }));
 
         LOGGER.info("Hello, this is Eddy's Heart Container mod, everything seems to work fine :)");
     }
