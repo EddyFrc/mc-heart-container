@@ -67,9 +67,7 @@ public class EddysHeartContainer implements ModInitializer {
 
             // Récupérer l'ID de l'achievement (ex: "minecraft:story/mine_stone")
             String advancementId = advancement.id().toString();
-            if (advancementId.equals("minecraft:end/kill_dragon")
-                || advancementId.equals("minecraft:nether/create_beacon")
-                || advancementId.equals("minecraft:adventure/hero_of_the_village")
+            if (advancementId.equals("minecraft:adventure/hero_of_the_village")
                 || advancementId.equals("minecraft:nether/all_potions")
                 || advancementId.equals("minecraft:adventure/adventuring_time")
                 || advancementId.equals("minecraft:adventure/kill_all_mobs")) {
