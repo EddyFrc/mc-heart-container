@@ -10,18 +10,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Mixin pour la classe LivingEntity.
- * Ce mixin a pour but d'injecter du code dans la méthode `onDeath` afin de déclencher notre événement personnalisé
- * lorsqu'une entité est tuée par un joueur.
+ * Ce mixin a pour but d'injecter du code dans la méthode `onDeath` pour déclencher l'event PlayerKillEntityCallback
  */
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
     /**
-     * Injection dans la méthode `onDeath`.
-     * L'annotation `@Inject` nous permet d'ajouter notre propre logique à une méthode existante sans la remplacer entièrement.
-     * `at = @At("HEAD")` signifie que notre code sera exécuté au tout début de la méthode `onDeath`.
-     * `ci` (CallbackInfo) est un objet fourni par Mixin qui nous permet d'interagir avec la méthode cible (par exemple, l'annuler).
+     * Injection dans la méthode `onDeath`
      *
      * @param source La source des dégâts qui ont causé la mort.
      * @param ci Les informations de rappel (callback info).
