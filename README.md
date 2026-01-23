@@ -1,5 +1,5 @@
 # Eddy's Heart Containers ![ENG](https://raw.githubusercontent.com/madebybowtie/FlagKit/refs/heads/master/Assets/PNG/GB%402x.png)
-![fabric-api](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/requires/fabric-api_vector.svg)
+![fabric-api](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/requires/fabric-api_vector.svg) ![modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg) ![curseforge](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg)
 
 This mod adds two items that are originally from _The Legend of Zelda_ series:
 * Heart Piece
@@ -33,7 +33,7 @@ One time per player.
 This is _my_ take on how Heart Containers should be implemented in Minecraft. It has some design choices that you may not like depending on your play style.
 
 # Eddy's Heart Containers ![FRA](https://raw.githubusercontent.com/madebybowtie/FlagKit/refs/heads/master/Assets/PNG/FR%402x.png)
-![fabric-api](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/requires/fabric-api_vector.svg)
+![fabric-api](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/requires/fabric-api_vector.svg) ![modrinth](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg) ![curseforge](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg)
 
 Ce mod ajoute deux items originaires de la franchise _The Legend of Zelda_:
 * Fragment de Coeur
