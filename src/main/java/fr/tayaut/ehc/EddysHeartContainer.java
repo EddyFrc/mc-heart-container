@@ -76,11 +76,19 @@ public class EddysHeartContainer implements ModInitializer {
                 || advancementId.equals("minecraft:nether/all_potions")
                 || advancementId.equals("minecraft:adventure/adventuring_time")
                 || advancementId.equals("minecraft:adventure/kill_all_mobs")) {
+
                 ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
-                if (!player.getInventory().insertStack(heartContainer)) {
+                // en gros là on regarde juste si on peut donner l'item au joueur
+                // (si l'inventaire n'est pas plein et pas déjà de heart container dedans)
+                if (player.getInventory().getOccupiedSlotWithRoomForStack(heartContainer) == -1  // non je copie absolument pas le code de mojang :)
+                    && player.getInventory().getEmptySlot() == -1) {
+                    // Les deux renvoient -1 -> pas possible de give, on va juste drop l'item par terre
                     player.dropItem(heartContainer, false);
-                    player.getEntityWorld().spawnEntity(new ItemEntity(player.getEntityWorld(), player.getX(), player.getY(), player.getZ(), heartContainer));
+                } else {
+                    // un des deux renvoit un emplacement valide : tout est ok, donnons l'item au joueur
+                    player.getInventory().insertStack(heartContainer);
                 }
+
             }
         });
 
