@@ -37,12 +37,12 @@ public class HeartContainerItem extends Item {
                     user.setHealth((float) userMaxHealth.getValue());
                 } else {
                     // Si le nombre max est atteint, l'utilisation de l'objet ne fait rien
-                    user.displayClientMessage(Component.literal("Nombre de coeurs maximal atteint"), true);
+                    user.sendSystemMessage(Component.literal("Nombre de coeurs maximal atteint"));
                     EddysHeartContainer.LOGGER.debug("Nombre de coeurs maximal atteint pour {}", user.getName().tryCollapseToString());
                 }
             } else {
                 // On n'est pas supposé arriver ici parce qu'une entité vivante a toujours cette propriété en principe
-                user.displayClientMessage(Component.literal("Une erreur s'est produite, merci de contacter l'auteur du mod"), true);
+                user.sendSystemMessage(Component.literal("Une erreur s'est produite, merci de contacter l'auteur du mod"));
                 EddysHeartContainer.LOGGER.error("MAX_HEALTH du joueur est null, il faut investiguer");
             }
         }
