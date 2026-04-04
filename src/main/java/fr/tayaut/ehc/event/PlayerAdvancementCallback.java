@@ -2,8 +2,8 @@ package fr.tayaut.ehc.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.advancement.AdvancementEntry;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.server.level.ServerPlayer;
 
 @FunctionalInterface
 public interface PlayerAdvancementCallback {
@@ -24,5 +24,5 @@ public interface PlayerAdvancementCallback {
      * @param player Le joueur qui vient de débloquer le progrès (Côté Serveur).
      * @param advancement L'objet AdvancementEntry contenant l'ID et les données du progrès.
      */
-    void onAdvancement(ServerPlayerEntity player, AdvancementEntry advancement);
+    void onAdvancement(ServerPlayer player, AdvancementHolder advancement);
 }

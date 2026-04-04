@@ -1,9 +1,9 @@
 package fr.tayaut.ehc.mixin;
 
 import fr.tayaut.ehc.data.IEntityDataSaver;
-import net.minecraft.entity.Entity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -86,17 +86,17 @@ public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
     }
 
 
-    @Inject(method = "writeData", at = @At("HEAD"))
-    protected void injectWriteMethod(WriteView view, CallbackInfo ci) {
+    @Inject(method = "saveWithoutId", at = @At("HEAD"))
+    protected void injectWriteMethod(ValueOutput view, CallbackInfo ci) {
         view.putBoolean("ehc.dragon_killed", isDragonKilled());
         view.putBoolean("ehc.wither_killed", isWitherKilled());
         view.putBoolean("ehc.elder_guardian_killed", isElderGuardianKilled());
     }
 
-    @Inject(method = "readData", at = @At("HEAD"))
-    protected void injectReadMethod(ReadView view, CallbackInfo ci) {
-        dragonKilled = view.getBoolean("ehc.dragon_killed", false);
-        witherKilled = view.getBoolean("ehc.wither_killed", false);
-        elderGuardianKilled = view.getBoolean("ehc.elder_guardian_killed", false);
+    @Inject(method = "load", at = @At("HEAD"))
+    protected void injectReadMethod(ValueInput view, CallbackInfo ci) {
+        dragonKilled = view.getBooleanOr("ehc.dragon_killed", false);
+        witherKilled = view.getBooleanOr("ehc.wither_killed", false);
+        elderGuardianKilled = view.getBooleanOr("ehc.elder_guardian_killed", false);
     }
 }
