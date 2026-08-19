@@ -10,6 +10,7 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.ElderGuardian;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -94,7 +95,7 @@ public class EddysHeartContainer implements ModInitializer {
             if (entity instanceof EnderDragon && !saver.ehc$onDragonKilled()
                 || entity instanceof WitherBoss && !saver.ehc$onWitherKilled()
                 || entity instanceof ElderGuardian && !saver.ehc$onElderGuardianKilled()
-                || entity instanceof WardenEntity && !saver.ehc$onWardenKilled()) {
+                || entity instanceof Warden && !saver.ehc$onWardenKilled()) {
 
                 ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
                 player.level().addFreshEntity(new ItemEntity(player.level(), entity.getX(), entity.getY(), entity.getZ(), heartContainer));
