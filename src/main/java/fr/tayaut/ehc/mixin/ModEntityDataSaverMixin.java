@@ -101,30 +101,30 @@ public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
     }
 
     @Inject(method = "saveWithoutId", at = @At("HEAD"))
-    protected void injectWriteMethod(ValueOutput view, CallbackInfo ci) {
-        if (view == null) {
+    protected void injectWriteMethod(ValueOutput output, CallbackInfo ci) {
+        if (output == null) {
             EddysHeartContainer.LOGGER.warn("Can't save data for this mod due to an unexpected situation. Please contact the mod author.");
-            EddysHeartContainer.LOGGER.warn("What went wrong : the ValueOutput \"view\" appears to be null.");
+            EddysHeartContainer.LOGGER.warn("What went wrong : the ValueOutput \"output\" appears to be null.");
             return;
         }
 
-        view.putBoolean("ehc.dragon_killed", isDragonKilled());
-        view.putBoolean("ehc.wither_killed", isWitherKilled());
-        view.putBoolean("ehc.elder_guardian_killed", isElderGuardianKilled());
-        view.putBoolean("ehc.warden_killed", isWardenKilled());
+        output.putBoolean("ehc.dragon_killed", isDragonKilled());
+        output.putBoolean("ehc.wither_killed", isWitherKilled());
+        output.putBoolean("ehc.elder_guardian_killed", isElderGuardianKilled());
+        output.putBoolean("ehc.warden_killed", isWardenKilled());
     }
 
     @Inject(method = "load", at = @At("HEAD"))
-    protected void injectReadMethod(ValueInput view, CallbackInfo ci) {
-        if (view == null) {
+    protected void injectReadMethod(ValueInput input, CallbackInfo ci) {
+        if (input == null) {
             EddysHeartContainer.LOGGER.warn("Can't read saved data for this mod due to an unexpected situation. Please contact the mod author.");
-            EddysHeartContainer.LOGGER.warn("What went wrong : the ValueInput \"view\" appears to be null.");
+            EddysHeartContainer.LOGGER.warn("What went wrong : the ValueInput \"input\" appears to be null.");
             return;
         }
 
-        setDragonKilled(view.getBooleanOr("ehc.dragon_killed", false));
-        setWitherKilled(view.getBooleanOr("ehc.wither_killed", false));
-        setElderGuardianKilled(view.getBooleanOr("ehc.elder_guardian_killed", false));
-        setWardenKilled(view.getBooleanOr("ehc.warden_killed", false));
+        setDragonKilled(input.getBooleanOr("ehc.dragon_killed", false));
+        setWitherKilled(input.getBooleanOr("ehc.wither_killed", false));
+        setElderGuardianKilled(input.getBooleanOr("ehc.elder_guardian_killed", false));
+        setWardenKilled(input.getBooleanOr("ehc.warden_killed", false));
     }
 }
