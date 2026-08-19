@@ -9,6 +9,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.ElderGuardianEntity;
+import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
@@ -67,10 +68,8 @@ public class EddysHeartContainer implements ModInitializer {
             }
         });
 
-        // enregistrement du callback "progrès"
         PlayerAdvancementCallback.EVENT.register((player, advancement) -> {
 
-            // Récupérer l'ID de l'achievement (ex: "minecraft:story/mine_stone")
             String advancementId = advancement.id().toString();
             if (advancementId.equals("minecraft:adventure/hero_of_the_village")
                 || advancementId.equals("minecraft:nether/all_potions")
@@ -80,27 +79,24 @@ public class EddysHeartContainer implements ModInitializer {
                 ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
                 // en gros là on regarde juste si on peut donner l'item au joueur
                 // (si l'inventaire n'est pas plein et pas déjà de heart container dedans)
-                if (player.getInventory().getOccupiedSlotWithRoomForStack(heartContainer) == -1  // non je copie absolument pas le code de mojang :)
+                if (player.getInventory().getOccupiedSlotWithRoomForStack(heartContainer) == -1
                     && player.getInventory().getEmptySlot() == -1) {
-                    // Les deux renvoient -1 -> pas possible de give, on va juste drop l'item par terre
                     player.dropItem(heartContainer, false);
                 } else {
-                    // un des deux renvoit un emplacement valide : tout est ok, donnons l'item au joueur
                     player.getInventory().insertStack(heartContainer);
                 }
 
             }
         });
 
-        // enregistrement du callback "entité morte"
         PlayerKillEntityCallback.EVENT.register(((entity, player) -> {
             IEntityDataSaver saver = (IEntityDataSaver) player;
-            // si l'entité qui est morte est un dragon et qu'il n'a pas encore été tué par ce joueur
+            // les ender dragon, wither et elder guardian donnent tous un réceptacle la première fois qu'ils sont tués (une fois par joueur)
             if (entity instanceof EnderDragonEntity && !saver.ehc$onDragonKilled()
-                // ou alors un wither, etc.
                 || entity instanceof WitherEntity && !saver.ehc$onWitherKilled()
-                || entity instanceof ElderGuardianEntity && !saver.ehc$onElderGuardianKilled()) {
-                // faire spawn un réceptacle de coeur sur le mob
+                || entity instanceof ElderGuardianEntity && !saver.ehc$onElderGuardianKilled()
+                || entity instanceof WardenEntity && !saver.ehc$onWardenKilled()) {
+
                 ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
                 player.getEntityWorld().spawnEntity(new ItemEntity(player.getEntityWorld(), entity.getX(), entity.getY(), entity.getZ(), heartContainer));
             }
