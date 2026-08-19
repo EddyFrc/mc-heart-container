@@ -67,10 +67,8 @@ public class EddysHeartContainer implements ModInitializer {
             }
         });
 
-        // enregistrement du callback "progrès"
         PlayerAdvancementCallback.EVENT.register((player, advancement) -> {
 
-            // Récupérer l'ID de l'achievement (ex: "minecraft:story/mine_stone")
             String advancementId = advancement.id().toString();
             if (advancementId.equals("minecraft:adventure/hero_of_the_village")
                 || advancementId.equals("minecraft:nether/all_potions")
@@ -82,25 +80,22 @@ public class EddysHeartContainer implements ModInitializer {
                 // (si l'inventaire n'est pas plein et pas déjà de heart container dedans)
                 if (player.getInventory().getSlotWithRemainingSpace(heartContainer) == -1  // non je copie absolument pas le code de mojang :)
                     && player.getInventory().getFreeSlot() == -1) {
-                    // Les deux renvoient -1 -> pas possible de give, on va juste drop l'item par terre
                     player.drop(heartContainer, false);
                 } else {
-                    // un des deux renvoit un emplacement valide : tout est ok, donnons l'item au joueur
                     player.getInventory().add(heartContainer);
                 }
 
             }
         });
 
-        // enregistrement du callback "entité morte"
         PlayerKillEntityCallback.EVENT.register(((entity, player) -> {
             IEntityDataSaver saver = (IEntityDataSaver) player;
-            // si l'entité qui est morte est un dragon et qu'il n'a pas encore été tué par ce joueur
+            // les ender dragon, wither et elder guardian donnent tous un réceptacle la première fois qu'ils sont tués (une fois par joueur)
             if (entity instanceof EnderDragon && !saver.ehc$onDragonKilled()
-                // ou alors un wither, etc.
                 || entity instanceof WitherBoss && !saver.ehc$onWitherKilled()
-                || entity instanceof ElderGuardian && !saver.ehc$onElderGuardianKilled()) {
-                // faire spawn un réceptacle de coeur sur le mob
+                || entity instanceof ElderGuardian && !saver.ehc$onElderGuardianKilled()
+                || entity instanceof WardenEntity && !saver.ehc$onWardenKilled()) {
+
                 ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
                 player.level().addFreshEntity(new ItemEntity(player.level(), entity.getX(), entity.getY(), entity.getZ(), heartContainer));
             }
