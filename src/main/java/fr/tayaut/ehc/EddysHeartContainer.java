@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class EddysHeartContainer implements ModInitializer {
 
@@ -54,6 +55,23 @@ public class EddysHeartContainer implements ModInitializer {
         LootTables.TRAIL_RUINS_COMMON_ARCHAEOLOGY.getValue()
     ));
 
+    private static final ArrayList<String> HEART_CONTAINER_REWARD_ADVANCEMENTS = new ArrayList<>(List.of(
+        "minecraft:adventure/hero_of_the_village"
+    ));
+
+    private static final ArrayList<String> HEART_PIECE_REWARD_ADVANCEMENTS = new ArrayList<>(List.of(
+        "minecraft:nether/all_potions",
+        "minecraft:adventure/bullseye",
+        "minecraft:adventure/adventuring_time",
+        "minecraft:adventure/kill_all_mobs",
+        "adventure/two_birds_one_arrow",
+        "husbandry/complete_catalogue",
+        "husbandry/bred_all_animals",
+        "husbandry/balanced_diet",
+        "husbandry/whole_pack"
+    ));
+
+
     @Override
     public void onInitialize() {
         ModItems.initialize();
@@ -69,29 +87,19 @@ public class EddysHeartContainer implements ModInitializer {
         });
 
         PlayerAdvancementCallback.EVENT.register((player, advancement) -> {
-
             String advancementId = advancement.id().toString();
-            if (advancementId.equals("minecraft:adventure/hero_of_the_village")
-                || advancementId.equals("minecraft:nether/all_potions")
-                || advancementId.equals("minecraft:adventure/adventuring_time")
-                || advancementId.equals("minecraft:adventure/kill_all_mobs")) {
 
-                ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
-                // en gros là on regarde juste si on peut donner l'item au joueur
-                // (si l'inventaire n'est pas plein et pas déjà de heart container dedans)
-                if (player.getInventory().getOccupiedSlotWithRoomForStack(heartContainer) == -1
-                    && player.getInventory().getEmptySlot() == -1) {
-                    player.dropItem(heartContainer, false);
-                } else {
-                    player.getInventory().insertStack(heartContainer);
-                }
+            if (HEART_CONTAINER_REWARD_ADVANCEMENTS.contains(advancementId)) {
+                Util.giveItemStack(player, new ItemStack(ModItems.HEART_CONTAINER));
 
+            } else if (HEART_PIECE_REWARD_ADVANCEMENTS.contains(advancementId)) {
+                Util.giveItemStack(player, new ItemStack(ModItems.HEART_PIECE));
             }
         });
 
-        PlayerKillEntityCallback.EVENT.register(((entity, player) -> {
+        PlayerKillEntityCallback.EVENT.register((entity, player) -> {
             IEntityDataSaver saver = (IEntityDataSaver) player;
-            // les ender dragon, wither et elder guardian donnent tous un réceptacle la première fois qu'ils sont tués (une fois par joueur)
+            // les ender dragon, wither, elder guardian et warden donnent tous un réceptacle la première fois qu'ils sont tués (une fois par joueur)
             if (entity instanceof EnderDragonEntity && !saver.ehc$onDragonKilled()
                 || entity instanceof WitherEntity && !saver.ehc$onWitherKilled()
                 || entity instanceof ElderGuardianEntity && !saver.ehc$onElderGuardianKilled()
@@ -100,7 +108,7 @@ public class EddysHeartContainer implements ModInitializer {
                 ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
                 player.getEntityWorld().spawnEntity(new ItemEntity(player.getEntityWorld(), entity.getX(), entity.getY(), entity.getZ(), heartContainer));
             }
-        }));
+        });
 
         LOGGER.info("Hello, this is Eddy's Heart Container mod, everything seems to work fine :)");
     }
