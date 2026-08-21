@@ -9,12 +9,10 @@ import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import static net.minecraft.data.advancements.AdvancementSubProvider.createPlaceholder;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-
-
-import static net.minecraft.data.advancements.AdvancementSubProvider.createPlaceholder;
 
 public class AdvancementProvider extends FabricAdvancementProvider {
 
