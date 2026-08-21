@@ -24,14 +24,14 @@ public class HeartContainerItem extends Item {
         AttributeInstance userMaxHealth = user.getAttribute(Attributes.MAX_HEALTH);
         if (userMaxHealth == null) {
             // n'est pas supposer arriver parce qu'une LivingEntiety a toujours cette propriété en principe
-            user.sendSystemMessage(Component.literal("An error occured, please contact the mod author and provide logs"));
+            user.displayClientMessage(Component.literal("An error occured, please contact the mod author and provide logs"), true);
             EddysHeartContainer.LOGGER.error("MAX_HEALTH du joueur est null, il faut investiguer");
             return super.use(world, user, hand);
         }
 
         // TODO: vie max data driven
         if (!(userMaxHealth.getBaseValue() < 40f)) {
-            user.sendSystemMessage(Component.literal("You reached the limit for maximum health!"));
+            user.displayClientMessage(Component.literal("You reached the limit for maximum health!"), true);
             EddysHeartContainer.LOGGER.debug("Nombre de coeurs maximal atteint pour {}", user.getName().tryCollapseToString());
             return super.use(world, user, hand);
         }

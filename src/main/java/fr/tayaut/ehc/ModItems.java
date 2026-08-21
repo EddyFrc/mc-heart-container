@@ -1,6 +1,6 @@
 package fr.tayaut.ehc;
 
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -48,10 +48,10 @@ public class ModItems {
 
     public static void initialize() {
         // Les deux lignes ici permettent de mettre les deux items dans la bonne catégorie en mode créa (je crois)
-        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(
             (itemGroup) -> itemGroup.accept(HEART_CONTAINER)
         );
-        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(
             (itemGroup) -> itemGroup.accept(HEART_PIECE)
         );
     }
