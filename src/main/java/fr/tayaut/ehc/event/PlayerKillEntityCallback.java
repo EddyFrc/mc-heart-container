@@ -2,8 +2,8 @@ package fr.tayaut.ehc.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 
 @FunctionalInterface
@@ -25,5 +25,5 @@ public interface PlayerKillEntityCallback {
      * @param entity L'entité qui a été tuée. Ne peut pas être nulle.
      * @param player Le joueur qui a tué l'entité. Peut être nul si le tueur n'est pas un joueur.
      */
-    void onKill(LivingEntity entity, PlayerEntity player);
+    void onKill(LivingEntity entity, Player player);
 }

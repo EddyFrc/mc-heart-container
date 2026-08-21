@@ -2,55 +2,54 @@ package fr.tayaut.ehc;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
-import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementEntry;
-import net.minecraft.advancement.AdvancementFrame;
-import net.minecraft.advancement.criterion.InventoryChangedCriterion;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import static net.minecraft.data.advancements.AdvancementSubProvider.createPlaceholder;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import static net.minecraft.data.advancement.AdvancementTabGenerator.reference;
-
 public class AdvancementProvider extends FabricAdvancementProvider {
 
-    public AdvancementProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+    public AdvancementProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup);
     }
 
     @Override
-    public void generateAdvancement(RegistryWrapper.WrapperLookup registryLookup, Consumer<AdvancementEntry> consumer) {
-        AdvancementEntry getHeartPiece = Advancement.Builder.create()
+    public void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer) {
+        AdvancementHolder getHeartPiece = Advancement.Builder.advancement()
             .display(
                 ModItems.HEART_PIECE,
-                Text.literal("Ta-tadadadaaaa!"),
-                Text.literal("Get a Heart Piece"),
-                Identifier.ofVanilla("gui/advancements/backgrounds/adventure"),
-                AdvancementFrame.TASK,
+                Component.literal("Ta-tadadadaaaa!"),
+                Component.literal("Get a Heart Piece"),
+                Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
+                AdvancementType.TASK,
                 true,
                 true,
                 false
             )
-            .criterion("got_heart_piece", InventoryChangedCriterion.Conditions.items(ModItems.HEART_PIECE))
-            .parent(reference(Identifier.ofVanilla("adventure/root").toString()))
-            .build(consumer, Identifier.of(EddysHeartContainer.MOD_ID, "get_heart_piece").toString());
+            .addCriterion("got_heart_piece", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HEART_PIECE))
+            .parent(createPlaceholder(Identifier.withDefaultNamespace("adventure/root").toString()))
+            .save(consumer, Identifier.fromNamespaceAndPath(EddysHeartContainer.MOD_ID, "get_heart_piece").toString());
 
-        AdvancementEntry getHeartContainer = Advancement.Builder.create()
+        AdvancementHolder getHeartContainer = Advancement.Builder.advancement()
             .display(
                 ModItems.HEART_CONTAINER,
-                Text.literal("Someday you will be surrounded with love..."),
-                Text.literal("Find or craft a Heart Container"),
-                Identifier.ofVanilla("gui/advancements/backgrounds/adventure"),
-                AdvancementFrame.GOAL,
+                Component.literal("Someday you will be surrounded with love..."),
+                Component.literal("Find or craft a Heart Container"),
+                Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
+                AdvancementType.GOAL,
                 true,
                 true,
                 false
             )
-            .criterion("got_heart_container", InventoryChangedCriterion.Conditions.items(ModItems.HEART_CONTAINER))
+            .addCriterion("got_heart_container", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HEART_CONTAINER))
             .parent(getHeartPiece)
-            .build(consumer, Identifier.of(EddysHeartContainer.MOD_ID, "get_heart_container").toString());
+            .save(consumer, Identifier.fromNamespaceAndPath(EddysHeartContainer.MOD_ID, "get_heart_container").toString());
     }
 }

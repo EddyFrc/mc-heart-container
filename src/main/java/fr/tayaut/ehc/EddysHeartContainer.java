@@ -5,24 +5,22 @@ import fr.tayaut.ehc.event.PlayerAdvancementCallback;
 import fr.tayaut.ehc.event.PlayerKillEntityCallback;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.mob.ElderGuardianEntity;
-import net.minecraft.entity.mob.WardenEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.LootTables;
-import net.minecraft.loot.condition.RandomChanceLootCondition;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.ElderGuardian;
+import net.minecraft.world.entity.monster.warden.Warden;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EddysHeartContainer implements ModInitializer {
@@ -30,29 +28,29 @@ public class EddysHeartContainer implements ModInitializer {
     public static final String MOD_ID = "ehc";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    private static final ArrayList<Identifier> LOOT_TABLE_IDS_50_PERCENT = new ArrayList<>(Collections.singleton(
-        LootTables.BASTION_TREASURE_CHEST.getValue()
+    private static final ArrayList<Identifier> LOOT_TABLE_IDS_50_PERCENT = new ArrayList<>(List.of(
+        BuiltInLootTables.BASTION_TREASURE.identifier()
     ));
 
-    private static final ArrayList<Identifier> LOOT_TABLE_IDS_20_PERCENT = new ArrayList<>(Arrays.asList(
-        LootTables.STRONGHOLD_CROSSING_CHEST.getValue(),
-        LootTables.STRONGHOLD_CORRIDOR_CHEST.getValue(),
-        LootTables.DESERT_PYRAMID_ARCHAEOLOGY.getValue(),
-        LootTables.DESERT_WELL_ARCHAEOLOGY.getValue(),
-        LootTables.TRAIL_RUINS_RARE_ARCHAEOLOGY.getValue(),
-        LootTables.OCEAN_RUIN_COLD_ARCHAEOLOGY.getValue(),
-        LootTables.OCEAN_RUIN_WARM_ARCHAEOLOGY.getValue(),
-        LootTables.ANCIENT_CITY_ICE_BOX_CHEST.getValue(),
-        LootTables.BASTION_TREASURE_CHEST.getValue(),
-        LootTables.DESERT_PYRAMID_CHEST.getValue(),
-        LootTables.JUNGLE_TEMPLE_CHEST.getValue(),
-        LootTables.WOODLAND_MANSION_CHEST.getValue(),
-        LootTables.END_CITY_TREASURE_CHEST.getValue()
+    private static final ArrayList<Identifier> LOOT_TABLE_IDS_20_PERCENT = new ArrayList<>(List.of(
+        BuiltInLootTables.STRONGHOLD_CROSSING.identifier(),
+        BuiltInLootTables.STRONGHOLD_CORRIDOR.identifier(),
+        BuiltInLootTables.DESERT_PYRAMID_ARCHAEOLOGY.identifier(),
+        BuiltInLootTables.DESERT_WELL_ARCHAEOLOGY.identifier(),
+        BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_RARE.identifier(),
+        BuiltInLootTables.OCEAN_RUIN_COLD_ARCHAEOLOGY.identifier(),
+        BuiltInLootTables.OCEAN_RUIN_WARM_ARCHAEOLOGY.identifier(),
+        BuiltInLootTables.ANCIENT_CITY_ICE_BOX.identifier(),
+        BuiltInLootTables.BASTION_TREASURE.identifier(),
+        BuiltInLootTables.DESERT_PYRAMID.identifier(),
+        BuiltInLootTables.JUNGLE_TEMPLE.identifier(),
+        BuiltInLootTables.WOODLAND_MANSION.identifier(),
+        BuiltInLootTables.END_CITY_TREASURE.identifier()
     ));
 
-    private static final ArrayList<Identifier> LOOT_TABLE_IDS_10_PERCENT = new ArrayList<>(Arrays.asList(
-        LootTables.ANCIENT_CITY_CHEST.getValue(),
-        LootTables.TRAIL_RUINS_COMMON_ARCHAEOLOGY.getValue()
+    private static final ArrayList<Identifier> LOOT_TABLE_IDS_10_PERCENT = new ArrayList<>(List.of(
+        BuiltInLootTables.ANCIENT_CITY.identifier(),
+        BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_COMMON.identifier()
     ));
 
     private static final ArrayList<String> HEART_CONTAINER_REWARD_ADVANCEMENTS = new ArrayList<>(List.of(
@@ -71,17 +69,16 @@ public class EddysHeartContainer implements ModInitializer {
         "husbandry/whole_pack"
     ));
 
-
     @Override
     public void onInitialize() {
         ModItems.initialize();
 
         LootTableEvents.MODIFY.register((registryKey, tableBuilder, source, wrapperLookup) -> {
-            if (LOOT_TABLE_IDS_50_PERCENT.contains(registryKey.getValue())) {
+            if (LOOT_TABLE_IDS_50_PERCENT.contains(registryKey.identifier())) {
                 addHeartPieceItemToLoot(tableBuilder, 0.5f);
-            } else if (LOOT_TABLE_IDS_20_PERCENT.contains(registryKey.getValue())) {
+            } else if (LOOT_TABLE_IDS_20_PERCENT.contains(registryKey.identifier())) {
                 addHeartPieceItemToLoot(tableBuilder, 0.2f);
-            } else if (LOOT_TABLE_IDS_10_PERCENT.contains(registryKey.getValue())) {
+            } else if (LOOT_TABLE_IDS_10_PERCENT.contains(registryKey.identifier())) {
                 addHeartPieceItemToLoot(tableBuilder, 0.1f);
             }
         });
@@ -100,13 +97,13 @@ public class EddysHeartContainer implements ModInitializer {
         PlayerKillEntityCallback.EVENT.register((entity, player) -> {
             IEntityDataSaver saver = (IEntityDataSaver) player;
             // les ender dragon, wither, elder guardian et warden donnent tous un réceptacle la première fois qu'ils sont tués (une fois par joueur)
-            if (entity instanceof EnderDragonEntity && !saver.ehc$onDragonKilled()
-                || entity instanceof WitherEntity && !saver.ehc$onWitherKilled()
-                || entity instanceof ElderGuardianEntity && !saver.ehc$onElderGuardianKilled()
-                || entity instanceof WardenEntity && !saver.ehc$onWardenKilled()) {
+            if (entity instanceof EnderDragon && !saver.ehc$onDragonKilled()
+                || entity instanceof WitherBoss && !saver.ehc$onWitherKilled()
+                || entity instanceof ElderGuardian && !saver.ehc$onElderGuardianKilled()
+                || entity instanceof Warden && !saver.ehc$onWardenKilled()) {
 
                 ItemStack heartContainer = new ItemStack(ModItems.HEART_CONTAINER);
-                player.getEntityWorld().spawnEntity(new ItemEntity(player.getEntityWorld(), entity.getX(), entity.getY(), entity.getZ(), heartContainer));
+                player.level().addFreshEntity(new ItemEntity(player.level(), entity.getX(), entity.getY(), entity.getZ(), heartContainer));
             }
         });
 
@@ -114,10 +111,10 @@ public class EddysHeartContainer implements ModInitializer {
     }
 
     private static void addHeartPieceItemToLoot(LootTable.Builder tableBuilder, float chance) {
-        LootPool.Builder poolBuilder = LootPool.builder()
-            .conditionally(RandomChanceLootCondition.builder(chance))
-            .with(ItemEntry.builder(ModItems.HEART_PIECE));
+        LootPool.Builder poolBuilder = LootPool.lootPool()
+            .when(LootItemRandomChanceCondition.randomChance(chance))
+            .add(LootItem.lootTableItem(ModItems.HEART_PIECE));
 
-        tableBuilder.pool(poolBuilder);
+        tableBuilder.withPool(poolBuilder);
     }
 }
