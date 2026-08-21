@@ -3,10 +3,16 @@
   "id": "ehc",
   "version": "${version}",
   "name": "Eddy's Heart Containers",
-  "description": "",
-  "authors": [],
-  "contact": {},
-  "license": "All-Rights-Reserved",
+  "description": "Adds the Heart Containers and Heart Pieces from the Zelda series, the simple way.",
+  "authors": [
+    "Eddy"
+  ],
+  "contact": {
+    "issues": "https://github.com/EddyFrc/mc-heart-container/issues",
+    "sources": "https://github.com/EddyFrc/mc-heart-container",
+    "discord": "https://discord.com/invite/7nXgfjp9uu"
+  },
+  "license": "LGPL-3.0-only",
   "icon": "assets/ehc/icon.png",
   "environment": "*",
   "entrypoints": {
