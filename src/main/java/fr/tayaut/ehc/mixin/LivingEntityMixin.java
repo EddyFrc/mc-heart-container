@@ -9,35 +9,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * Ce mixin a pour but d'injecter du code dans la méthode `onDeath` pour déclencher l'event PlayerKillEntityCallback
- */
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
-    /**
-     * Injection dans la méthode `onDeath`
-     *
-     * @param source La source des dégâts qui ont causé la mort.
-     * @param ci Les informations de rappel (callback info).
-     */
     @Inject(at = @At("HEAD"), method = "die")
     private void onDeath(DamageSource source, CallbackInfo ci) {
-        // On récupère l'attaquant depuis la source des dégâts.
-        // La source des dégâts contient de nombreuses informations, dont l'entité qui est à l'origine des dégâts.
+        // déclencher le callback PlayerKillEntityCallback à chaque fois qu'un joueur tue une entité quelconque
         if (source.getEntity() instanceof Player) {
-            // Si l'attaquant est une instance de PlayerEntity, cela signifie qu'un joueur a tué l'entité.
-
-            // On "cast" (convertit) l'attaquant en PlayerEntity pour pouvoir le passer à notre événement.
-            Player player = (Player) source.getEntity();
-
-            // On "cast" (convertit) l'instance actuelle de LivingEntity (qui est `this` dans ce contexte)
-            // pour la passer à notre événement.
-            LivingEntity entity = (LivingEntity) (Object) this;
-
-            // On déclenche l'événement.
-            // Tous les callbacks enregistrés sur `PlayerKillEntityCallback.EVENT` seront appelés.
-            PlayerKillEntityCallback.EVENT.invoker().onKill(entity, player);
+            PlayerKillEntityCallback.EVENT.invoker().onKill(
+                (LivingEntity) (Object) this, // evil mixin reinterpret cast magic
+                (Player) source.getEntity()
+            );
         }
     }
 }

@@ -15,37 +15,31 @@ public class HeartContainerItem extends Item {
         super(settings);
     }
 
-    /**
-     * Utilise le réceptacle de coeur
-     * @param world the world the item was used in
-     * @param user the player who used the item
-     * @param hand the hand used
-     * @return ActionResult
-     */
     @Override
     public InteractionResult use(Level world, Player user, InteractionHand hand) {
-
-        if (!world.isClientSide()) {
-            AttributeInstance userMaxHealth = user.getAttribute(Attributes.MAX_HEALTH);
-            if (userMaxHealth != null) {
-                // Check si le nombre max de coeurs est déjà atteint
-                if (userMaxHealth.getBaseValue() < 40f) {
-                    // Supprime l'objet de l'inventaire (utilisation)
-                    user.getItemInHand(hand).shrink(1);
-                    // Modifie la valeur de base de santé maximale (+2 points = +1 coeur)
-                    userMaxHealth.setBaseValue(userMaxHealth.getBaseValue() + 2);
-                    user.setHealth((float) userMaxHealth.getValue());
-                } else {
-                    // Si le nombre max est atteint, l'utilisation de l'objet ne fait rien
-                    user.displayClientMessage(Component.literal("Nombre de coeurs maximal atteint"), true);
-                    EddysHeartContainer.LOGGER.debug("Nombre de coeurs maximal atteint pour {}", user.getName().tryCollapseToString());
-                }
-            } else {
-                // On n'est pas supposé arriver ici parce qu'une entité vivante a toujours cette propriété en principe
-                user.displayClientMessage(Component.literal("Une erreur s'est produite, merci de contacter l'auteur du mod"), true);
-                EddysHeartContainer.LOGGER.error("MAX_HEALTH du joueur est null, il faut investiguer");
-            }
+        if (world.isClientSide()) {
+            return super.use(world, user, hand);
         }
+
+        AttributeInstance userMaxHealth = user.getAttribute(Attributes.MAX_HEALTH);
+        if (userMaxHealth == null) {
+            // n'est pas supposer arriver parce qu'une LivingEntiety a toujours cette propriété en principe
+            user.sendSystemMessage(Component.literal("An error occured, please contact the mod author and provide logs"));
+            EddysHeartContainer.LOGGER.error("MAX_HEALTH du joueur est null, il faut investiguer");
+            return super.use(world, user, hand);
+        }
+
+        // TODO: vie max data driven
+        if (!(userMaxHealth.getBaseValue() < 40f)) {
+            user.sendSystemMessage(Component.literal("You reached the limit for maximum health!"));
+            EddysHeartContainer.LOGGER.debug("Nombre de coeurs maximal atteint pour {}", user.getName().tryCollapseToString());
+            return super.use(world, user, hand);
+        }
+
+        user.getItemInHand(hand).shrink(1);
+        // Modifie la valeur de base de santé maximale (+2 points = +1 coeur)
+        userMaxHealth.setBaseValue(userMaxHealth.getBaseValue() + 2);
+        user.setHealth((float) userMaxHealth.getValue());
 
         return super.use(world, user, hand);
     }
